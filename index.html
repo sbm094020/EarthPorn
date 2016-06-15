@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+	<title> EarthPorn </title>
+	<link href='https://fonts.googleapis.com/css?family=Lato:300,100&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+	<link rel="stylesheet" href="css/bootstrap.css">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/w3.css">
+
+	<!--	jQuery-->
+	<script type="text/javascript" src="js/jquery-2.2.4.min.js"></script>
+</head>
+
+<body>
+	<div class="container">
+		<div class="row" id="header">
+			<div class="col-md-3 col-sm-3 col-xs-3">
+				<img class="title-logo img-responsive" src="images/logo.PNG" alt="Earth logo"></div>
+			<div class="col-md-9 col-sm-9 col-xs-9 text-uppercase text-right">
+				<h1>Earth Porn</h1>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<hr>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<h3 class="text-center"> Exposing some of the planet's most beautiful sights .... </h3>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-4 col-sm-12 text-center">
+				<img class="img-responsive" src="images/aogashima_volcano_japan.jpg" alt="japan">
+				<p> Aogashima Volcano, Japan </p>
+			</div>
+			<div class="col-md-4 col-sm-12 text-center">
+				<img class="img-responsive" src="images/petra_jordan.jpg" alt="jordan">
+				<p> Petra, Jordan </p>
+			</div>
+			<div class="col-md-4 col-sm-12 text-center">
+				<img class="img-responsive" src="images/mamanuca_islands_fiji.jpg" alt="fiji">
+				<p> Aogashima Volcano, Japan </p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<h4 class="text">The blue planet is full of sites like this : natural terrain that is vibrant, and simply breathtaking to the eyes. Unfortunately, most of mankind cannot afford the privelege to feast eyes on geolocations such as the ones shown above. Through this website, I seek to kill this gap in exposure. I have included a carousel below that will take you around the world. I intend to capture the planet's magnificence in a series of images collected from different sources. I hope you enjoy the collection I have put together.  </h4>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<blockquote>
+					<p>On earth there is no heaven but there are pieces of it.</p>
+					<footer> Jules Renard <cite title="Source Title"> <em> Les Histoires Naturelles (Nature Stories)</em></cite></footer>
+				</blockquote>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-12">
+				<h3 class="text-center text-uppercase"> Image Gallery </h3>
+			</div>
+		</div>
+		<div class="row">
+			<div id="images" class="col-md-12 text-center">
+				<img id="loader" src="http://placehold.it/600x550" title="Loader" alt="loader_image">
+				<a class="w3-btn-floating" style="position:absolute;top:45%;left:0" onclick="plusDivs(-1)">❮</a>
+				<a class="w3-btn-floating" style="position:absolute;top:45%;right:0" onclick="plusDivs(1)">❯</a>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 text-center">
+				<div id="reddit-content">
+					<span id="description"></span>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12" id="footer">
+				<h6 class="text-center"> Created by Sachin Moozhikulam </h6>
+			</div>
+		</div>
+		<script>
+			$(document).ready(function () {
+				var $visibleImages = $('#images img:visible');
+				var $visibleImage = $visibleImages[0];
+				var title = $($visibleImage, this).attr('title');
+				$("#reddit-content #description").text(title);
+			});
+
+			function updateDescription() {
+				var $visibleImages = $('#images img:visible');
+				var $visibleImage = $visibleImages[0];
+				var title = $($visibleImage, this).attr('title');
+				$("#reddit-content #description").text(title);
+			}
+
+			var slideIndex = 1;
+
+			$.getJSON("http://www.reddit.com/r/EarthPorn.json?jsonp=?",
+					function foo(data) {
+						$.each(
+							data.data.children.slice(0, 50),
+							function (i, post) {
+								if (imageExists(post.data.url) === true) {
+									//									$("#reddit-content").append("<div class = 'mySlidesCaptions'>" post.data.title + "</div>");
+									$("<img/>")
+										.attr("src", post.data.url)
+										.attr("title", post.data.title)
+										.attr("class", "mySlides")
+										.appendTo("#images");
+								}
+
+								//					};
+								//								$("#reddit-content").append('<br>' + post.data.permalink);
+								//								$("#reddit-content").append('<br>' + post.data.ups);
+								//								$("#reddit-content").append('<br>' + post.data.downs);
+								//								$("#reddit-content").append('<hr>');
+							}
+						)
+						showDivs(slideIndex);
+					}
+				)
+				.success(function () {
+					console.log("second success");
+				})
+				.error(function () {
+					console.log("error");
+				})
+				.complete(function () {
+					console.log("complete");
+				});
+
+
+
+
+			function imageExists(image_url) {
+
+				var http = new XMLHttpRequest();
+				try {
+					http.open('HEAD', image_url, false);
+					http.send();
+				} catch (error) {
+					console.log("Error received: " + error);
+					return false;
+				};
+
+				if (http.status === 200) {
+					return true;
+				}
+
+				return false;
+			}
+
+			function plusDivs(n) {
+				showDivs(slideIndex += n);
+			}
+
+			function showDivs(n) {
+				document.getElementById("loader").style.display = 'none';
+				var i;
+				var x = document.getElementsByClassName("mySlides");
+				if (n > x.length) {
+					slideIndex = 1
+				}
+				if (n < 1) {
+					slideIndex = x.length
+				}
+				for (i = 0; i < x.length; i++) {
+					x[i].style.display = "none";
+				}
+				x[slideIndex - 1].style.display = "block";
+				updateDescription();
+			}
+		</script>
+	</div>
+</body>
+
+</html>

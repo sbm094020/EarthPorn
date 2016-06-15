@@ -1,0 +1,48 @@
+.title-logo{
+	margin-top: 10px;
+	margin-bottom: 10px;	
+}
+
+.row{
+/*	rows need to breathe*/
+	margin-bottom: 10px;
+	margin-top: 10px;
+}
+
+.text{
+	line-height: 1.5;
+}
+#header{
+	background-color: #35465c;
+/*	background-color: black;*/
+	color: white;
+}
+
+#footer{
+	background-color: #35465c;
+	color: white;
+}
+
+.mySlides{
+	width: 80%;
+	height: 550px;
+	margin: 0 auto;
+	display: none;
+}
+
+.mySlidesCaptions{
+	width: 90%;
+	margin: 0 auto;
+	display: none;
+}
+#loader{
+	width: 80%;
+	height: 550px;
+	margin: 0 auto;
+	display: block;
+}
+
+#reddit-content{
+	width: 80%;
+	margin: 0 auto;
+}
